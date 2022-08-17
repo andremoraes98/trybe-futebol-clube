@@ -32,7 +32,7 @@ User.init({
     allowNull: false,
   },
 }, {
-  modelName: 'users',
+  modelName: 'Users',
   underscored: true,
   sequelize: db,
   timestamps: false,
