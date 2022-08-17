@@ -1,4 +1,9 @@
 import * as express from 'express';
+import UserController from './controller/UserController';
+import UserService from './services/UserService';
+
+const userService = new UserService();
+const userController = new UserController(userService);
 
 class App {
   public app: express.Express;
@@ -26,6 +31,7 @@ class App {
 
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
+    this.app.post('/login', userController.login);
   }
 }
 
