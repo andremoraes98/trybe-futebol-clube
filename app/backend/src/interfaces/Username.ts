@@ -1,10 +1,17 @@
+export interface Token {
+  token: string
+}
+
 export interface Indexable {
   id: number
 }
 
-export default interface IUser extends Indexable {
-  username: string,
-  password: string,
-  role: 'user' | 'admin',
+export interface UserCredential {
   email: string,
+  password: string,
+}
+
+export default interface IUser extends Indexable, UserCredential {
+  username: string,
+  role: 'user' | 'admin',
 }
