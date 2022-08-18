@@ -1,4 +1,3 @@
-import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import User from '../database/models/User';
 import { UserCredential, Token } from '../interfaces/Username';
@@ -10,24 +9,22 @@ export interface IUserService {
 }
 
 export default class UserService implements IUserService {
-  private checkIfPasswordMatchesEmail = async (credentials: UserCredential): Promise<boolean> => {
-    const { email, password } = credentials;
+  private checkIfEmailMatches = async (credentials: UserCredential): Promise<boolean> => {
+    const { email } = credentials;
     const result = await User.findOne({
       where: {
         email,
       },
+      raw: true,
     });
 
-    return result ? bcrypt.compareSync(password, result.password) : false;
+    return result ? result.email === email : false;
   };
 
   login = async (credentials: UserCredential) => {
     const { email } = credentials;
-    const willGenerateToken = await this.checkIfPasswordMatchesEmail(credentials);
+    const token = jwt.sign({ email }, secret);
 
-    if (willGenerateToken) {
-      const token = jwt.sign({ email }, secret);
-      return { token };
-    } throw new Error('Incorrect email or password');
+    return { token };
   };
 }
