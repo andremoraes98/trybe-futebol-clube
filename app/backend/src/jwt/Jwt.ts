@@ -5,13 +5,13 @@ import 'dotenv/config';
 const secret = process.env.JWT_SECRET || 'secret';
 
 export default class Jwt {
-  encode = async (payload: Payload): Promise<string> => {
+  encode = (payload: Payload): string => {
     const token = jwt.sign(payload, secret);
 
     return token;
   };
 
-  decode = async (token: string): Promise<Payload> => {
+  decode = (token: string): Payload => {
     const { email, id } = jwt.verify(token, secret) as Payload;
 
     return { email, id };
