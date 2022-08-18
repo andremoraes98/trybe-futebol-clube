@@ -11,11 +11,13 @@ const userController = new UserController(userService);
 const router = Router();
 
 router.post(
-  '/login',
+  '/',
   validateBody,
   validateEmail,
   validatePassword,
   (req, res) => userController.login(req, res),
 );
+
+router.get('/validate', userController.validate);
 
 export default router;
