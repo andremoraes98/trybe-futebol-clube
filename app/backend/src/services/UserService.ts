@@ -1,29 +1,30 @@
-import * as jwt from 'jsonwebtoken';
 import User from '../database/models/User';
+import Jwt from '../jwt/Jwt';
 import { UserCredential, Token } from '../interfaces/Username';
+import Payload from '../interfaces/Payload';
 
-const secret = process.env.JWT_SECRET || 'secret';
+const jwt = new Jwt();
 
 export interface IUserService {
   login(credentials: UserCredential): Promise<Token>,
 }
 
 export default class UserService implements IUserService {
-  private checkIfEmailMatches = async (credentials: UserCredential): Promise<boolean> => {
+  login = async (credentials: UserCredential) => {
     const { email } = credentials;
     const result = await User.findOne({
       where: {
         email,
       },
       raw: true,
-    });
+    }) as User;
 
-    return result ? result.email === email : false;
-  };
+    const payload: Payload = {
+      id: result.id,
+      email: result.email,
+    };
 
-  login = async (credentials: UserCredential) => {
-    const { email } = credentials;
-    const token = jwt.sign({ email }, secret);
+    const token = await jwt.encode(payload);
 
     return { token };
   };
