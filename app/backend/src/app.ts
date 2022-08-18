@@ -1,9 +1,7 @@
 import * as express from 'express';
-import UserController from './controller/UserController';
-import UserService from './services/UserService';
-
-const userService = new UserService();
-const userController = new UserController(userService);
+import 'express-async-errors';
+import userRouter from './routes/user';
+import errorMiddleware from './middleware/errorMiddleware';
 
 class App {
   public app: express.Express;
@@ -31,7 +29,8 @@ class App {
 
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
-    this.app.post('/login', userController.login);
+    this.app.use(userRouter);
+    this.app.use(errorMiddleware);
   }
 }
 
