@@ -7,12 +7,13 @@ const jwt = new Jwt();
 
 export interface IUserService {
   login(credentials: UserCredential): Promise<Token>,
+  validate(token: string): Promise<string>,
 }
 
 export default class UserService implements IUserService {
   login = async (credentials: UserCredential) => {
     const { email } = credentials;
-    const result = await User.findOne({
+    const user = await User.findOne({
       where: {
         email,
       },
@@ -20,12 +21,25 @@ export default class UserService implements IUserService {
     }) as User;
 
     const payload: Payload = {
-      id: result.id,
-      email: result.email,
+      id: user.id,
+      email: user.email,
     };
 
     const token = await jwt.encode(payload);
 
     return { token };
+  };
+
+  validate = async (token: string) => {
+    const { id } = await jwt.decode(token);
+
+    const user = await User.findOne({
+      where: {
+        id,
+      },
+      raw: true,
+    }) as User;
+
+    return user.role;
   };
 }
