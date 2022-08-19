@@ -1,6 +1,7 @@
 import * as express from 'express';
 import 'express-async-errors';
 import userRouter from './routes/user';
+import teamRouter from './routes/team';
 import errorMiddleware from './middleware/errorMiddleware';
 
 class App {
@@ -30,6 +31,7 @@ class App {
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
     this.app.use('/login', userRouter);
+    this.app.use('/teams', teamRouter);
     this.app.use(errorMiddleware);
   }
 }
