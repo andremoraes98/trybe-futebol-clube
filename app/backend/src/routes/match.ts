@@ -9,4 +9,6 @@ const route = Router();
 
 route.get('/', (req: Request, res: Response) => mathController.getAll(req, res));
 
+route.post('/', (req: Request, res: Response) => mathController.create(req, res));
+
 export default route;
