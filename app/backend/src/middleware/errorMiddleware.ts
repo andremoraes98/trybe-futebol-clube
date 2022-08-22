@@ -15,6 +15,8 @@ const errors: Record<string, number> = {
   ValidationError: 400,
   EqualTeam: 401,
   InvalidTeam: 404,
+  InvalidToken: 401,
+  JsonWebTokenError: 401,
 };
 
 const errorMiddleware = (
@@ -26,9 +28,11 @@ const errorMiddleware = (
   const { message, name } = err;
   const httpStatus = errors[name];
 
-  if (httpStatus) {
+  if (name === 'JsonWebTokenError') {
+    return res.status(httpStatus).json({ message: 'Token must be a valid token' });
+  } if (httpStatus) {
     return res.status(httpStatus).json({ message });
-  } return res.status(500).json({ message });
+  } return res.status(500).json(err);
 };
 
 export default errorMiddleware;
