@@ -13,6 +13,8 @@ export class CustomError extends Error {
 const errors: Record<string, number> = {
   InvalidCredential: 401,
   ValidationError: 400,
+  EqualTeam: 401,
+  InvalidTeam: 404,
 };
 
 const errorMiddleware = (
