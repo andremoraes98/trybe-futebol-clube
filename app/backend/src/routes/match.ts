@@ -22,4 +22,6 @@ route.post(
 
 route.patch('/:id/finish', (req: Request, res: Response) => mathController.updateFinish(req, res));
 
+route.patch('/:id', (req: Request, res: Response) => mathController.updateGoals(req, res));
+
 export default route;
