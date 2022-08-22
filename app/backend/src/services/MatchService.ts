@@ -3,6 +3,7 @@ import Match from '../database/models/Match';
 
 export interface IMatchService {
   getAll(): Promise<Match[]>;
+  create(match: Match): Promise<Match>;
 }
 
 export default class MatchService implements IMatchService {
@@ -20,6 +21,17 @@ export default class MatchService implements IMatchService {
       },
       ],
     });
+
+    return result;
+  };
+
+  create = async (match: Match) => {
+    const createMatch = {
+      ...match,
+      inProgress: true,
+    };
+
+    const result = await Match.create(createMatch);
 
     return result;
   };
