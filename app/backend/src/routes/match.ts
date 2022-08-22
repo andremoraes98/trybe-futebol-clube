@@ -11,4 +11,6 @@ route.get('/', (req: Request, res: Response) => mathController.getAll(req, res))
 
 route.post('/', (req: Request, res: Response) => mathController.create(req, res));
 
+route.patch('/:id/finish', (req: Request, res: Response) => mathController.updateFinish(req, res));
+
 export default route;
