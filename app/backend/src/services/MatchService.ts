@@ -2,10 +2,16 @@ import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import { CustomError } from '../middleware/errorMiddleware';
 
+interface Goals {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+}
+
 export interface IMatchService {
   getAll(): Promise<Match[]>;
   create(match: Match): Promise<Match>;
   updateFinish(id: number): Promise<void>;
+  updateGoals(id: number, goals: Goals): Promise<void>;
 }
 
 export default class MatchService implements IMatchService {
@@ -44,6 +50,18 @@ export default class MatchService implements IMatchService {
     }
 
     await Match.update({ inProgress: false }, {
+      where: {
+        id,
+      },
+    });
+  };
+
+  updateGoals = async (id: number, goals: Goals) => {
+    if (Number.isNaN(id)) {
+      throw new CustomError('ValidationError', 'Id must be a number');
+    }
+
+    await Match.update(goals, {
       where: {
         id,
       },
