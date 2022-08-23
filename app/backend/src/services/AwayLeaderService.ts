@@ -1,4 +1,3 @@
-import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import TeamService from './TeamService';
 
@@ -32,15 +31,6 @@ export default class AwayLeaderService implements IAwayLeaderService {
       where: {
         awayTeam: teamId,
         inProgress: 0,
-      },
-      logging: console.log,
-      include: {
-        model: Team,
-        as: 'teamAway',
-        attributes: { exclude: ['id'] },
-        where: {
-          id: teamId,
-        },
       },
     });
 
@@ -184,9 +174,9 @@ export default class AwayLeaderService implements IAwayLeaderService {
 
     const sortedGoalsFavor = this.sortedGoalsFavor(sortedGoalsBalance);
 
-    // const sortedGoalsOwn = this.sortedGoalsOwn(sortedGoalsFavor);
+    const sortedGoalsOwn = this.sortedGoalsOwn(sortedGoalsFavor);
 
-    return sortedGoalsFavor;
+    return sortedGoalsOwn;
   };
 
   getAwayClassification = async () => {

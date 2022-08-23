@@ -1,4 +1,3 @@
-import Team from '../database/models/Team';
 import Match from '../database/models/Match';
 import TeamService from './TeamService';
 
@@ -32,15 +31,6 @@ export default class HomeLeaderService implements IHomeLeaderService {
       where: {
         homeTeam: teamId,
         inProgress: 0,
-      },
-      logging: console.log,
-      include: {
-        model: Team,
-        as: 'teamHome',
-        attributes: { exclude: ['id'] },
-        where: {
-          id: teamId,
-        },
       },
     });
 
@@ -147,7 +137,7 @@ export default class HomeLeaderService implements IHomeLeaderService {
 
   sortedGoalsFavor = (teamsInfo: Infos[]): Infos[] => {
     const sortedTeamsInfo = teamsInfo.sort((a, b) => {
-      if (a.goalsBalance === b.goalsBalance) {
+      if (a.totalPoints === b.totalPoints && a.goalsBalance === b.goalsBalance) {
         if (a.goalsFavor > b.goalsFavor) {
           return -1;
         } if (a.goalsFavor < b.goalsFavor) {
@@ -161,7 +151,11 @@ export default class HomeLeaderService implements IHomeLeaderService {
 
   sortedGoalsOwn = (teamsInfo: Infos[]): Infos[] => {
     const sortedTeamsInfo = teamsInfo.sort((a, b) => {
-      if (a.goalsFavor === b.goalsFavor) {
+      if (
+        a.totalPoints === b.totalPoints
+        && a.goalsBalance === b.goalsBalance
+        && a.goalsFavor === b.goalsFavor
+      ) {
         if (a.goalsOwn > b.goalsOwn) {
           return 1;
         } if (a.goalsOwn < b.goalsOwn) {
