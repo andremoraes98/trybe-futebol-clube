@@ -21,9 +21,9 @@ const validateEmail = async (req: Request, res: Response, next: NextFunction) =>
       email,
     },
     raw: true,
-  });
+  }) as User;
 
-  if (result?.email !== email) {
+  if (result.email !== email) {
     throw new CustomError('InvalidCredential', 'Incorrect email or password');
   }
 
