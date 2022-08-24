@@ -16,6 +16,11 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use('/login', userRouter);
+    this.app.use('/teams', teamRouter);
+    this.app.use('/matches', matchRouter);
+    this.app.use('/leaderboard', leaderboardRouter);
+    this.app.use(errorMiddleware);
   }
 
   private config():void {
@@ -32,11 +37,6 @@ class App {
 
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
-    this.app.use('/login', userRouter);
-    this.app.use('/teams', teamRouter);
-    this.app.use('/matches', matchRouter);
-    this.app.use('/leaderboard', leaderboardRouter);
-    this.app.use(errorMiddleware);
   }
 }
 
