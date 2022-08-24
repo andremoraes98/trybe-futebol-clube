@@ -7,9 +7,7 @@ import { app } from '../app';
 import User from '../database/models/User';
 import IUser, { Token } from '../interfaces/Username';
 import * as jwt from 'jsonwebtoken';
-
 import { Response } from 'superagent';
-import Payload from '../interfaces/Payload';
 
 chai.use(chaiHttp);
 
@@ -24,11 +22,6 @@ const userMock: IUser = {
 }
 
 const tokenMock: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQHVzZXIuY29tIiwiaWF0IjoxNjYxMzcyNDk5fQ.emwXcTJCOaxWKYJ1FsZjzDf7auIRKC5FJlBisZhF0MU';
-
-const payloadoMock: Payload = {
-  email: 'user@user.com',
-  id: 2,
-}
 
 describe('/login', () => {
   let chaiHttpResponse: Response;
@@ -147,28 +140,4 @@ describe('/login/validate', () => {
 
       expect(chaiHttpResponse.status).to.equal(401);
   });
-
-  // it('espera que retorne um status 401 se o email for inválido;', async () => {
-  //   chaiHttpResponse = await chai
-  //     .request(app)
-  //     .post('/login')
-  //     .send({
-  //       email: 'wrong@wrong.com',
-  //       password: 'secret_user',
-  //     });
-
-  //     expect(chaiHttpResponse.status).to.equal(401);
-  // });
-
-  // it('espera que retorne um status 401 se a senha for inválida.', async () => {
-  //   chaiHttpResponse = await chai
-  //     .request(app)
-  //     .post('/login')
-  //     .send({
-  //       email: 'user@user.com',
-  //       password: 'wrong_password',
-  //     });
-
-  //     expect(chaiHttpResponse.status).to.equal(401);
-  // });
 });
