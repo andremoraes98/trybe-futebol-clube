@@ -9,20 +9,26 @@ import IUser, { Token } from '../interfaces/Username';
 import * as jwt from 'jsonwebtoken';
 
 import { Response } from 'superagent';
+import Payload from '../interfaces/Payload';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 const userMock: IUser = {
-  id: 1,
+  id: 2,
   email: 'user@user.com',
   password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO',
   role: 'user',
   username: 'username',
 }
 
-const tokenMock: string = 'token';
+const tokenMock: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQHVzZXIuY29tIiwiaWF0IjoxNjYxMzcyNDk5fQ.emwXcTJCOaxWKYJ1FsZjzDf7auIRKC5FJlBisZhF0MU';
+
+const payloadoMock: Payload = {
+  email: 'user@user.com',
+  id: 2,
+}
 
 describe('/login', () => {
   let chaiHttpResponse: Response;
@@ -98,4 +104,71 @@ describe('/login', () => {
 
       expect(chaiHttpResponse.status).to.equal(401);
   });
+});
+
+describe('/login/validate', () => {
+  let chaiHttpResponse: Response;
+
+  beforeEach(async () => {
+    sinon
+      .stub(User, 'findOne')
+      .resolves(userMock as User);
+    // sinon
+    //   .stub(jwt, 'verify')
+    //   .resolves(payloadoMock);
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  })
+
+  it('espera que retorne um status 200;', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .set('authorization', tokenMock);
+
+    expect(chaiHttpResponse.status).to.equal(200);
+  });
+
+  it('espera que retorne o cargo do usuário;', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate')
+      .set('authorization', tokenMock);
+
+      expect(chaiHttpResponse.body).to.be.an('object').with.key('role');
+  });
+
+  it('espera que retorne um status 401 se um token não for passado;', async () => {
+    chaiHttpResponse = await chai
+      .request(app)
+      .get('/login/validate');
+
+      expect(chaiHttpResponse.status).to.equal(401);
+  });
+
+  // it('espera que retorne um status 401 se o email for inválido;', async () => {
+  //   chaiHttpResponse = await chai
+  //     .request(app)
+  //     .post('/login')
+  //     .send({
+  //       email: 'wrong@wrong.com',
+  //       password: 'secret_user',
+  //     });
+
+  //     expect(chaiHttpResponse.status).to.equal(401);
+  // });
+
+  // it('espera que retorne um status 401 se a senha for inválida.', async () => {
+  //   chaiHttpResponse = await chai
+  //     .request(app)
+  //     .post('/login')
+  //     .send({
+  //       email: 'user@user.com',
+  //       password: 'wrong_password',
+  //     });
+
+  //     expect(chaiHttpResponse.status).to.equal(401);
+  // });
 });
