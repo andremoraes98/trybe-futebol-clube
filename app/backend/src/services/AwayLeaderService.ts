@@ -1,20 +1,8 @@
 import Match from '../database/models/Match';
 import TeamService from './TeamService';
+import Infos from '../interfaces/Leader';
 
 const teamService = new TeamService();
-
-interface Infos {
-  name: string;
-  totalPoints: number;
-  totalGames: number;
-  totalVictories: number;
-  totalDraws: number;
-  totalLosses: number;
-  goalsFavor: number;
-  goalsOwn: number;
-  goalsBalance: number;
-  efficiency: string;
-}
 
 export interface IAwayLeaderService {
   getAwayMatchesFromTeam(teamId: number): Promise<Match[]>;
