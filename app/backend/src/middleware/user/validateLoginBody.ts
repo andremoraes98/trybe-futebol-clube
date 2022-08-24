@@ -3,6 +3,8 @@ import * as bcrypt from 'bcryptjs';
 import User from '../../database/models/User';
 import { CustomError } from '../errorMiddleware';
 
+const INVALID_CREDENTIAL_MESSAGE = 'Incorrect email or password';
+
 const validateBody = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
@@ -21,10 +23,14 @@ const validateEmail = async (req: Request, res: Response, next: NextFunction) =>
       email,
     },
     raw: true,
-  }) as User;
+  });
+
+  if (!result) {
+    throw new CustomError('InvalidCredential', INVALID_CREDENTIAL_MESSAGE);
+  }
 
   if (result.email !== email) {
-    throw new CustomError('InvalidCredential', 'Incorrect email or password');
+    throw new CustomError('InvalidCredential', INVALID_CREDENTIAL_MESSAGE);
   }
 
   next();
@@ -38,10 +44,14 @@ const validatePassword = async (req: Request, res: Response, next: NextFunction)
       email,
     },
     raw: true,
-  }) as User;
+  });
+
+  if (!result) {
+    throw new CustomError('InvalidCredential', INVALID_CREDENTIAL_MESSAGE);
+  }
 
   if (!bcrypt.compareSync(password, result.password)) {
-    throw new CustomError('InvalidCredential', 'Incorrect email or password');
+    throw new CustomError('InvalidCredential', INVALID_CREDENTIAL_MESSAGE);
   }
 
   next();
