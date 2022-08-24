@@ -17,7 +17,7 @@ const teamMock: ITeam = {
   teamName: 'Bahia',
 };
 
-describe('/teams', () => {
+describe('GET: /teams', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {
@@ -39,7 +39,7 @@ describe('/teams', () => {
   });
 });
 
-describe('/teams/:id', () => {
+describe('GET: /teams/:id', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {

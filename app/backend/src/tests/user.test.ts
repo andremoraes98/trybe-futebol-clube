@@ -23,7 +23,7 @@ const userMock: IUser = {
 
 const tokenMock: string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQHVzZXIuY29tIiwiaWF0IjoxNjYxMzcyNDk5fQ.emwXcTJCOaxWKYJ1FsZjzDf7auIRKC5FJlBisZhF0MU';
 
-describe('/login', () => {
+describe('POST: /login', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {
@@ -99,7 +99,7 @@ describe('/login', () => {
   });
 });
 
-describe('/login/validate', () => {
+describe('GET: /login/validate', () => {
   let chaiHttpResponse: Response;
 
   beforeEach(async () => {
