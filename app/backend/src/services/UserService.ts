@@ -33,7 +33,7 @@ export default class UserService implements IUserService {
   };
 
   validate = async (token: string) => {
-    const { id } = await jwt.decode(token);
+    const { id } = jwt.decode(token);
 
     const user = await User.findOne({
       where: {
